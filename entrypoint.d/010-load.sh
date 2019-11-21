@@ -87,10 +87,15 @@ if DbReachable; then
 				sed -ri 's/DocumentRoot \/var\/www\/html$/DocumentRoot \/var\/www\/html\/'${DOMAIN}'/g' /etc/apache2/sites-available/000-default.conf
 				cd /var/www/html/${DOMAIN} && sudo -u www-data chmod +x ./bin/cron.sh
 
+				NOTICE 'Reload Apache'
+
+                service apache2 reload
+
 				crontab -l -u www-data | {
 					cat
 					printf "\n* * * * * /var/www/html/${DOMAIN}/bin/cron.sh process-treocore php\n"
 				} | crontab -u www-data -
+				
 				INFO "Current crontab is $(crontab -l -u www-data)"
 
 				sed -ri "s/'localhost'/'database_server'/g" /var/www/html/${DOMAIN}/data/config.php

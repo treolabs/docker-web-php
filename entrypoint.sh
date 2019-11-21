@@ -37,7 +37,3 @@ fi
 
 exec "$@"
 
-
-DEBUG 'Reload Apache config'
-
-service apache2 reload
