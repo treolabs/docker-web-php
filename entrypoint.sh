@@ -14,7 +14,7 @@ DEBUG "Set version for PHP = $PHP_VER"
 service apache2 stop
 rm -rf /var/run/apache2/
 
-a2dismod php5.6 php7.0 php7.1 php7.2 php7.3
+a2dismod php7.1 php7.2 php7.3
 
 a2enmod php$PHP_VER
 
@@ -36,3 +36,8 @@ if [[ -d "$DIR" ]]; then
 fi
 
 exec "$@"
+
+
+DEBUG 'Reload Apache config'
+
+service apache2 reload
