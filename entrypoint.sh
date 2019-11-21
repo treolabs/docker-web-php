@@ -4,6 +4,11 @@ set -e
 source /scripts/b-log.sh
 LOG_LEVEL_ALL
 
+source /scripts/utils.sh
+
+SetPhphVersion
+
+
 DEBUG "Set version for PHP = $PHP_VER"
 
 service apache2 stop

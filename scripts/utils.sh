@@ -28,3 +28,11 @@ function DbReachable() {
 		false
 	fi
 }
+
+function SetPhphVersion() {
+
+    if [[ -z "$PHP_VER" ]]; then
+        export PHP_VER=7.3
+    fi
+
+}
