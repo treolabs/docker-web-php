@@ -85,15 +85,14 @@ if DbReachable; then
 				cd /var/www/html && sudo -u www-data composer create-project treolabs/skeleton ${DOMAIN} --no-dev --prefer-dist &&
 					cd ${DOMAIN} && sudo -u www-data composer require --no-update treolabs/pim:* && sudo -u www-data composer update --no-dev
 				sed -ri 's/DocumentRoot \/var\/www\/html$/DocumentRoot \/var\/www\/html\/'${DOMAIN}'/g' /etc/apache2/sites-available/000-default.conf
-				cd /var/www/html/${DOMAIN} && sudo -u www-data chmod +x ./bin/cron.sh
 
 				NOTICE 'Reload Apache'
 
-                service apache2 reload
+        service apache2 reload
 
 				crontab -l -u www-data | {
 					cat
-					printf "\n* * * * * /var/www/html/${DOMAIN}/bin/cron.sh process-treocore php\n"
+					printf "\n* * * * * /usr/bin/php$PHP_VER /var/www/html/${DOMAIN}/index.php cron\n"
 				} | crontab -u www-data -
 				
 				INFO "Current crontab is $(crontab -l -u www-data)"
