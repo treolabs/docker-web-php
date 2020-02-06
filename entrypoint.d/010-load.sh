@@ -102,10 +102,6 @@ if DbReachable; then
 				sed -ri "s/'user'\s*=>\s*'\s*'/'user' => 'root'/g" /var/www/html/${DOMAIN}/data/config.php
 				sed -ri "s/'password'\s*=>\s*'\s*'/'password' => '${MYSQL_ROOT_PASSWORD}'/g" /var/www/html/${DOMAIN}/data/config.php
 
-				echo '###########################'
-				NOTICE "Open in the browser http://localhost:${WEB_PORT} for continue installation"
-				echo '###########################'
-
 			fi
 
 		fi
@@ -117,6 +113,10 @@ if DbReachable; then
 
 	INFO "Update alies for sendmail"
 	newaliases
+
+  echo '###########################'
+    NOTICE "Open in the browser http://localhost:${WEB_PORT} for continue installation"
+  echo '###########################'
 else
 
 	FATAL 'Mysql host database_server is not reachable'
