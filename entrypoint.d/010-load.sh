@@ -85,15 +85,14 @@ if DbReachable; then
 				cd /var/www/html && sudo -u www-data composer create-project treolabs/skeleton ${DOMAIN} --no-dev --prefer-dist &&
 					cd ${DOMAIN} && sudo -u www-data composer require --no-update treolabs/pim:* && sudo -u www-data composer update --no-dev
 				sed -ri 's/DocumentRoot \/var\/www\/html$/DocumentRoot \/var\/www\/html\/'${DOMAIN}'/g' /etc/apache2/sites-available/000-default.conf
-				cd /var/www/html/${DOMAIN} && sudo -u www-data chmod +x ./bin/cron.sh
 
 				NOTICE 'Reload Apache'
 
-                service apache2 reload
+        service apache2 reload
 
 				crontab -l -u www-data | {
 					cat
-					printf "\n* * * * * /var/www/html/${DOMAIN}/bin/cron.sh process-treocore php\n"
+					printf "\n* * * * * /usr/bin/php$PHP_VER /var/www/html/${DOMAIN}/index.php cron\n"
 				} | crontab -u www-data -
 				
 				INFO "Current crontab is $(crontab -l -u www-data)"
@@ -102,10 +101,6 @@ if DbReachable; then
 				sed -ri "s/'dbname'\s*=>\s*'\s*'/'dbname' => '${MYSQL_DATABASE}'/g" /var/www/html/${DOMAIN}/data/config.php
 				sed -ri "s/'user'\s*=>\s*'\s*'/'user' => 'root'/g" /var/www/html/${DOMAIN}/data/config.php
 				sed -ri "s/'password'\s*=>\s*'\s*'/'password' => '${MYSQL_ROOT_PASSWORD}'/g" /var/www/html/${DOMAIN}/data/config.php
-
-				echo '###########################'
-				NOTICE "Open in the browser http://localhost:${WEB_PORT} for continue installation"
-				echo '###########################'
 
 			fi
 
@@ -118,6 +113,10 @@ if DbReachable; then
 
 	INFO "Update alies for sendmail"
 	newaliases
+
+  echo '###########################'
+    NOTICE "Open in the browser http://localhost:${WEB_PORT} for continue installation"
+  echo '###########################'
 else
 
 	FATAL 'Mysql host database_server is not reachable'
